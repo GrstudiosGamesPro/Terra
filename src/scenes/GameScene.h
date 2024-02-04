@@ -10,7 +10,9 @@ class GameScene : public scene
 public:
   UPhysics *world_physics = nullptr;
   UBody *maked_body;
+  UBody *maked_body2;
   Model *md = nullptr;
+  Model *md2 = nullptr;
 
   Shader *scene_shader = nullptr;
   Camera camera = Camera();

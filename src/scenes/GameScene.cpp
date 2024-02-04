@@ -13,6 +13,10 @@ void GameScene::startScene()
 
     maked_body = world_physics->make_body();
     world_physics->add_body(maked_body);
+
+    maked_body2 = world_physics->make_body();
+    world_physics->add_body(maked_body2);
+    maked_body2->is_kinematic = true;
   }
   else
   {
@@ -20,6 +24,7 @@ void GameScene::startScene()
   }
 
   md = new Model("assets/Box.fbx");
+  md2 = new Model("assets/Box.fbx");
   scene_shader = new Shader("assets/shaders/default.vert", "assets/shaders/default.frag");
 }
 
@@ -27,7 +32,7 @@ void GameScene::updateScene()
 {
   if (world_physics != nullptr)
   {
-    world_physics->step_world(static_cast<float>(1) / 165);
+    world_physics->step_world(static_cast<float>(1) / 60);
   }
 
   scene_shader->use();
@@ -43,6 +48,18 @@ void GameScene::updateScene()
   model = glm::scale(model, glm::vec3(0.5f));
   scene_shader->setMat4("model", model);
   md->Draw(*scene_shader);
+
+  model = glm::mat4(1.0f);
+  model = glm::translate(model, glm::vec3(0.0f, -2.0f, 0.0f));
+  model = glm::scale(model, glm::vec3(0.5f));
+  scene_shader->setMat4("model", model);
+  md2->Draw(*scene_shader);
+
+  if (maked_body->body_position.y <= maked_body2->body_position.y)
+  {
+    maked_body->body_velocity.y = 0;
+    maked_body->body_position.y = 3;
+  }
 }
 
 void GameScene::onSwapBuffer()

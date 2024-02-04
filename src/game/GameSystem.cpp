@@ -49,18 +49,37 @@ void GameSystem::startEngine(scene *game)
 
   game->startScene();
 
+  const double target_fps = 60.0;
+  const double target_frame_time = 1.0 / target_fps;
+
+  double lastFrameTime = glfwGetTime();
+  double accumulatedTime = 0.0;
+
   while (!glfwWindowShouldClose(window))
   {
+    double currentFrameTime = glfwGetTime();
+    double deltaTime = currentFrameTime - lastFrameTime;
+    lastFrameTime = currentFrameTime;
+
+    accumulatedTime += deltaTime;
+
     processInput(window);
 
-    glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-    calculateFPS(window);
-    game->updateScene();
-    glfwSwapBuffers(window);
-    game->onSwapBuffer();
+    // Renderizar solo si ha pasado suficiente tiempo desde el último cuadro
+    if (accumulatedTime >= target_frame_time)
+    {
+      glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
+      glClear(GL_COLOR_BUFFER_BIT);
+
+      calculateFPS(window);
+      game->updateScene();
+      glfwSwapBuffers(window);
+      game->onSwapBuffer();
+
+      accumulatedTime -= target_frame_time; // Restar el tiempo utilizado para renderizar
+    }
+
     glfwPollEvents();
   }
-
   glfwTerminate();
 }

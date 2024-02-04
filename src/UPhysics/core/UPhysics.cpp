@@ -6,15 +6,13 @@ void UPhysics::step_world(float elapsed_time)
 
   for (UBody *body : bodys)
   {
-    body->force += gravity * body->mass;
-
-    // Utiliza el tiempo transcurrido para controlar la velocidad de la simulación
-    body->body_velocity += body->force / body->mass * elapsed_time;
-
-    body->body_position += body->body_velocity * elapsed_time;
-
-    // Restablece la fuerza para el siguiente paso de la simulación
-    body->force = Vec3(0, 0, 0);
+    if (!body->is_kinematic)
+    {
+      body->force += gravity * body->mass;
+      body->body_velocity += body->force / body->mass * elapsed_time;
+      body->body_position += body->body_velocity * elapsed_time;
+      body->force = Vec3(0, 0, 0);
+    }
   }
 }
 

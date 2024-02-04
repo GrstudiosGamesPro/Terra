@@ -12,7 +12,7 @@ struct UPoint
 
 enum UType
 {
-  SPHERE,
+  CUBE,
   PLANE
 };
 
@@ -21,10 +21,10 @@ struct UCollider
   UType collider_type;
 };
 
-struct UColliderSphere : UCollider
+struct UColliderCube : UCollider
 {
   Vec3 collider_center;
-  float collider_radius;
+  Vec3 collider_radius;
 };
 
 struct UColliderPlane : UCollider
