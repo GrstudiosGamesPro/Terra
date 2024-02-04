@@ -5,8 +5,8 @@ set "archivo=Terra.exe"
 
 color 0b
 echo The compilation process takes time depending on the speed of your computer.
-echo
-echo
+echo By
+echo UltraHStudios.com
 call :CompileCPPProyect
 
 if exist %archivo% (
