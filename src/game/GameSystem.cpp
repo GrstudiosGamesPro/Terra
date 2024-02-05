@@ -19,6 +19,7 @@ void GameSystem::startEngine(scene *game)
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+  glfwWindowHint(GL_MULTISAMPLE, 16);
 
 #ifdef __APPLE__
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
@@ -70,7 +71,7 @@ void GameSystem::startEngine(scene *game)
     // Renderizar solo si ha pasado suficiente tiempo desde el último cuadro
     if (accumulatedTime >= target_frame_time)
     {
-      glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
+      glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
       glClear(GL_COLOR_BUFFER_BIT);
 
       calculateFPS(window);

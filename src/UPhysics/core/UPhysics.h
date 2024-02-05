@@ -16,6 +16,7 @@ using namespace std;
 class UPhysics
 {
 public:
+  float in_step;
   glm::vec3 gravity = glm::vec3(0.0f, -9.8f, 0.0f);
   vector<UBody *> bodys = vector<UBody *>();
 
@@ -60,7 +61,7 @@ public:
   bool checkCollision(UBody obj1, UBody obj2)
   {
     float distance = glm::distance(obj1.body_position, obj2.body_position);
-    float combinedRadii = obj1.collision_type->radius + obj2.collision_type->radius;
+    float combinedRadii = obj1.collision_type->radius / 2.0f + obj2.collision_type->radius / 2.0f;
     return distance < combinedRadii;
   }
 };

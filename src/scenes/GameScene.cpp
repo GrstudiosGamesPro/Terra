@@ -27,8 +27,8 @@ void GameScene::startScene()
     std::cout << "World physics not found" << std::endl;
   }
 
-  md = new Model("assets/Box.fbx");
-  md2 = new Model("assets/Box.fbx");
+  md = new Model("assets/Sphere.fbx");
+  md2 = new Model("assets/Sphere.fbx");
   scene_shader = new Shader("assets/shaders/default.vert", "assets/shaders/default.frag");
 }
 
@@ -54,7 +54,7 @@ void GameScene::updateScene(float deltatime)
   scene_shader->setMat4("model", model);
   md2->Draw(*scene_shader);
 
-  float force_multiplier = 40;
+  float force_multiplier = 55;
 
   if (glfwGetKey(GameSystem::window, GLFW_KEY_W) == GLFW_PRESS)
   {

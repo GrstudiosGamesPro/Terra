@@ -29,3 +29,8 @@ void UBody::apply_force(vec3 direction)
   body_velocity = vec3(0.0f, 0.0f, 0.0f);
   force += direction;
 }
+
+void UBody::set_position(vec3 new_position)
+{
+  body_position = new_position;
+}

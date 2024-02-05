@@ -17,9 +17,10 @@ public:
   vec3 get_velocity();
   void apply_force(vec3 direction);
   void update_body();
+  void set_position(vec3 new_position);
 
   // VARIABLES
-  float mass = 1.0f;
+  float mass = 10.0f;
   bool use_gravity = true;
   bool is_kinematic = false;
 

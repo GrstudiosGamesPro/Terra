@@ -2,6 +2,7 @@
 
 void UPhysics::step_world(float elapsed_time)
 {
+  in_step = elapsed_time;
   // elapsed_time es el tiempo transcurrido desde la última actualización
 
   for (UBody *body : bodys)
@@ -82,19 +83,22 @@ void UPhysics::ResolveCollision(UBody *body1, UBody *body2)
     glm::vec3 collisionNormal = glm::normalize(body1->get_position() - body2->get_position());
 
     float coeficiente_friccion = body1->collision_type->friction * 100.0f;
-    glm::vec3 fuerza_friccion = -coeficiente_friccion * body1->body_velocity;
-    body1->apply_force(fuerza_friccion);
-    body2->apply_force(fuerza_friccion);
+    glm::vec3 fuerza_friccion = -coeficiente_friccion * glm::dot(body1->body_velocity, collisionNormal) * collisionNormal;
 
-    std::cout << "FRICTION FORCE: "
-              << "Y: " << fuerza_friccion.y << std::endl;
+    if (glm::length(fuerza_friccion) >= 200)
+    {
+      body1->apply_force(fuerza_friccion);
+      body2->apply_force(-fuerza_friccion);
+    }
 
-    float coeficiente_restitucion = 0.7f;
+    float coeficiente_restitucion = 0.1f;
     glm::vec3 velocidad_despues_colision = (mass1 * body1->body_velocity + mass2 * body2->body_velocity +
                                             coeficiente_restitucion * mass2 * glm::dot(body2->body_velocity - body1->body_velocity, collisionNormal) * collisionNormal) /
                                            (mass1 + mass2);
+
     body1->body_velocity = velocidad_despues_colision;
 
-    body1->body_position = body2->get_position() + collisionNormal * (body1->collision_type->radius + body2->collision_type->radius) / 2.0f;
+    glm::vec3 nueva_posicion = body2->get_position() + collisionNormal * (body1->collision_type->radius + body2->collision_type->radius) / 2.0f;
+    body1->set_position(nueva_posicion);
   }
 }
