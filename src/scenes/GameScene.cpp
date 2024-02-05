@@ -13,10 +13,14 @@ void GameScene::startScene()
 
     maked_body = world_physics->make_body();
     world_physics->add_body(maked_body);
+    maked_body->body_position.y = 15.0f;
+    maked_body->collision_type = new UCollider();
 
     maked_body2 = world_physics->make_body();
     world_physics->add_body(maked_body2);
     maked_body2->is_kinematic = true;
+    maked_body2->collision_type = new UCollider();
+    maked_body2->body_position.y = -2;
   }
   else
   {
@@ -28,13 +32,8 @@ void GameScene::startScene()
   scene_shader = new Shader("assets/shaders/default.vert", "assets/shaders/default.frag");
 }
 
-void GameScene::updateScene()
+void GameScene::updateScene(float deltatime)
 {
-  if (world_physics != nullptr)
-  {
-    world_physics->step_world(static_cast<float>(1) / 60);
-  }
-
   scene_shader->use();
   glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)800 / (float)600, 0.1f, 100.0f);
   glm::mat4 view = camera.GetViewMatrix();
@@ -55,10 +54,53 @@ void GameScene::updateScene()
   scene_shader->setMat4("model", model);
   md2->Draw(*scene_shader);
 
-  if (maked_body->body_position.y <= maked_body2->body_position.y)
+  float force_multiplier = 40;
+
+  if (glfwGetKey(GameSystem::window, GLFW_KEY_W) == GLFW_PRESS)
   {
-    maked_body->body_velocity.y = 0;
-    maked_body->body_position.y = 3;
+    maked_body->body_velocity = {0, 0, 0};
+    maked_body->force = {0, 0, 0};
+    maked_body->force.y += force_multiplier;
+  }
+
+  if (glfwGetKey(GameSystem::window, GLFW_KEY_A) == GLFW_PRESS)
+  {
+    maked_body->body_velocity = {0, 0, 0};
+    maked_body->force.x -= force_multiplier;
+  }
+
+  if (glfwGetKey(GameSystem::window, GLFW_KEY_S) == GLFW_PRESS)
+  {
+    maked_body->body_velocity = {0, 0, 0};
+    maked_body->force.y -= force_multiplier;
+  }
+
+  if (glfwGetKey(GameSystem::window, GLFW_KEY_D) == GLFW_PRESS)
+  {
+    maked_body->body_velocity = {0, 0, 0};
+    maked_body->force.x += force_multiplier;
+  }
+
+  if (world_physics != nullptr)
+  {
+    world_physics->step_world(static_cast<float>(1) / 60);
+
+    // vec3 aabb_min = maked_body2->body_position - vec3(maked_body2->collision_type->collider_radius * 2.0f);
+    // vec3 aabb_max = maked_body2->body_position + vec3(maked_body2->collision_type->collider_radius * 2.0f);
+
+    // if (maked_body->body_position.x >= aabb_min.x &&
+    //     maked_body->body_position.x <= aabb_max.x &&
+    //     maked_body->body_position.y >= aabb_min.y &&
+    //     maked_body->body_position.y <= aabb_max.y &&
+    //     maked_body->body_position.z >= aabb_min.z &&
+    //     maked_body->body_position.z <= aabb_max.z)
+    // {
+    //   // Calcular la magnitud de la velocidad antes de la colisión
+    //   float preCollisionSpeed = glm::length(maked_body->body_velocity);
+
+    //   // Aplicar rebote proporcional a la velocidad anterior
+    //   maked_body->body_velocity = -maked_body->body_velocity * (0 * preCollisionSpeed);
+    // }
   }
 }
 

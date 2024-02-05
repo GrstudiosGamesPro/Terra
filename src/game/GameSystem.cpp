@@ -1,5 +1,7 @@
 #include "GameSystem.h"
 
+GLFWwindow *GameSystem::window = nullptr;
+
 void GameSystem::processInput(GLFWwindow *window)
 {
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -72,7 +74,7 @@ void GameSystem::startEngine(scene *game)
       glClear(GL_COLOR_BUFFER_BIT);
 
       calculateFPS(window);
-      game->updateScene();
+      game->updateScene(static_cast<float>(deltaTime));
       glfwSwapBuffers(window);
       game->onSwapBuffer();
 

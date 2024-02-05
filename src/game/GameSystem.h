@@ -8,6 +8,13 @@
 #include <sstream>
 #include <iomanip>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/rotate_vector.hpp>
+#include <glm/gtx/vector_angle.hpp>
+#include <glm/gtx/normalize_dot.hpp>
+
 class GameSystem
 {
 public:
@@ -15,7 +22,7 @@ public:
   unsigned int SCR_WIDTH = 800;
   unsigned int SCR_HEIGHT = 600;
 
-  GLFWwindow *window;
+  static GLFWwindow *window;
 
   string gameTitle = "Terra";
 

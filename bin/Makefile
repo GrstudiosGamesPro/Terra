@@ -1,12 +1,12 @@
 # Variables
 CXX = g++
-CXXFLAGS = -g --std=c++20 -Wall -DGLM_ENABLE_EXPERIMENTAL # -DNDEBUG
+CXXFLAGS = -g --std=c++17 -Wall -DGLM_ENABLE_EXPERIMENTAL #-DNDEBUG
 INCLUDE_DIR = -I../vendor/include -I../vendor/include/origami-math/include
 LIB_DIR = -L../vendor/libs
 SRC_DIR = ../src
 VENDOR_DIR = ../vendor/libs
 
-SOURCES = $(wildcard $(SRC_DIR)/*.cpp $(SRC_DIR)/game/*.cpp $(SRC_DIR)/graphics/*.cpp $(SRC_DIR)/components/*.cpp $(SRC_DIR)/scenes/*.cpp $(SRC_DIR)/UPhysics/*.cpp $(SRC_DIR)/UPhysics/core/*.cpp $(SRC_DIR)/UPhysics/core/body*.cpp)
+SOURCES = $(wildcard $(SRC_DIR)/*.cpp $(SRC_DIR)/game/*.cpp $(SRC_DIR)/graphics/*.cpp $(SRC_DIR)/components/*.cpp $(SRC_DIR)/scenes/*.cpp $(SRC_DIR)/UPhysics/core/*.cpp $(SRC_DIR)/UPhysics/core/body/*.cpp)
 
 GLAD_SOURCE = $(VENDOR_DIR)/glad.c
 

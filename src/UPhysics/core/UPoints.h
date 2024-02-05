@@ -1,11 +1,17 @@
 #pragma once
-#include <origami-math/include/origami/math.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/rotate_vector.hpp>
+#include <glm/gtx/vector_angle.hpp>
+
+using namespace glm;
 
 struct UPoint
 {
-  Vec3 a;
-  Vec3 b;
-  Vec3 normal;
+  glm::vec3 a;
+  glm::vec3 b;
+  glm::vec3 normal;
   float depth;
   bool has_collision;
 };
@@ -19,16 +25,20 @@ enum UType
 struct UCollider
 {
   UType collider_type;
+  glm::vec3 collider_radius = {1.0f, 1.0f, 1.0f};
+  float radius = 1.0f;
+  float density = 1.0f;
+  float friction = 0.3f;
 };
 
 struct UColliderCube : UCollider
 {
-  Vec3 collider_center;
-  Vec3 collider_radius;
+  glm::vec3 collider_center;
+  glm::vec3 collider_radius = {1.0f, 1.0f, 1.0f};
 };
 
 struct UColliderPlane : UCollider
 {
-  Vec3 collider_normal;
+  glm::vec3 collider_normal;
   float collider_distance;
 };

@@ -14,6 +14,7 @@ if exist %archivo% (
     echo File compiled successfully by running it.
     Terra
     pause
+    exit
 ) else (
     color 04
     echo Error during compilation file does not exist.

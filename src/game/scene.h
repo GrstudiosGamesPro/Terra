@@ -18,7 +18,7 @@ public:
   {
   }
 
-  virtual void updateScene()
+  virtual void updateScene(float deltatime)
   {
     for (Shared<Entity> g : entity)
     {

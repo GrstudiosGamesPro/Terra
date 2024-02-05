@@ -4,6 +4,7 @@
 #include "../game/scene.h"
 #include "../UPhysics/core/UPhysics.h"
 #include "../graphics/camera.h"
+#include "../game/GameSystem.h"
 
 class GameScene : public scene
 {
@@ -18,6 +19,6 @@ public:
   Camera camera = Camera();
 
   void startScene() override;
-  void updateScene() override;
+  void updateScene(float deltatime) override;
   void onSwapBuffer() override;
 };
