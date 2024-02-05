@@ -12,8 +12,10 @@ public:
   UPhysics *world_physics = nullptr;
   UBody *maked_body;
   UBody *maked_body2;
+  UBody *maked_body3;
   Model *md = nullptr;
   Model *md2 = nullptr;
+  Model *md3 = nullptr;
 
   Shader *scene_shader = nullptr;
   Camera camera = Camera();

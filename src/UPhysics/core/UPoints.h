@@ -19,13 +19,30 @@ struct UPoint
 enum UType
 {
   CUBE,
-  PLANE
+  PLANE,
+  SPHERE,
+  MESH,
+  CAPSULE
 };
 
 struct UCollider
 {
-  UType collider_type;
+  UType utype;
   glm::vec3 collider_radius = {1.0f, 1.0f, 1.0f};
+  float radius = 1.0f;
+  float density = 1.0f;
+  float friction = 0.5f;
+};
+
+struct UColliderSphere : UCollider
+{
+public:
+  UColliderSphere()
+  {
+    utype = SPHERE;
+  }
+
+  glm::vec3 collider_center;
   float radius = 1.0f;
   float density = 1.0f;
   float friction = 0.5f;
@@ -33,12 +50,29 @@ struct UCollider
 
 struct UColliderCube : UCollider
 {
+public:
+  UColliderCube()
+  {
+    utype = CUBE;
+  }
+
   glm::vec3 collider_center;
   glm::vec3 collider_radius = {1.0f, 1.0f, 1.0f};
+  float radius = 1.0f;
+  float density = 1.0f;
+  float friction = 0.5f;
 };
 
 struct UColliderPlane : UCollider
 {
+public:
+  UColliderPlane()
+  {
+    utype = PLANE;
+  }
+
   glm::vec3 collider_normal;
-  float collider_distance;
+  vec2 radius = {1.0f, 1.0f};
+  float density = 1.0f;
+  float friction = 0.5f;
 };

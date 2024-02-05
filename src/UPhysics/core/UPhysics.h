@@ -60,6 +60,10 @@ public:
 
   bool checkCollision(UBody obj1, UBody obj2)
   {
+    // if (obj1.collision_type->utype == UType::SPHERE)
+    // {
+    // }
+
     float distance = glm::distance(obj1.body_position, obj2.body_position);
     float combinedRadii = obj1.collision_type->radius / 2.0f + obj2.collision_type->radius / 2.0f;
     return distance < combinedRadii;

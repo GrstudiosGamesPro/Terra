@@ -13,7 +13,37 @@ void UPhysics::step_world(float elapsed_time)
       glm::vec3 acceleration = body->force / body->mass;
       body->body_velocity += acceleration * elapsed_time;
 
-      body->body_position += body->body_velocity * elapsed_time;
+      if (body->freeze_x)
+      {
+        body->force.x = 0;
+        body->body_velocity.x = 0;
+        body->body_position.x = body->body_position.x;
+        body->body_position.y += body->body_velocity.y * elapsed_time;
+        body->body_position.z += body->body_velocity.z * elapsed_time;
+      }
+      else if (body->freeze_y)
+      {
+        body->force.y = 0;
+        body->body_velocity.y = 0;
+        body->body_position.y = body->body_position.y;
+        body->body_position.x += body->body_velocity.x * elapsed_time;
+        body->body_position.z += body->body_velocity.z * elapsed_time;
+      }
+      else if (body->freeze_z)
+      {
+        body->force.z = 0;
+        body->body_velocity.z = 0;
+        body->body_position.z = body->body_position.z;
+        body->body_position.x += body->body_velocity.x * elapsed_time;
+        body->body_position.y += body->body_velocity.y * elapsed_time;
+      }
+      else
+      {
+        body->body_position += body->body_velocity * elapsed_time;
+      }
+
+      // Resto de la lógica para la actualización del cuerpo (gravedad, colisiones, etc.)
+      // ...
 
       body->force = glm::vec3(0, 0, 0);
       glm::vec3 torque = body->calculateTorque();

@@ -15,10 +15,19 @@ void GameScene::startScene()
     world_physics->add_body(maked_body);
     maked_body->body_position.y = 15.0f;
 
+    maked_body->collision_type = new UColliderSphere();
+    maked_body->freeze_z = true;
+
     maked_body2 = world_physics->make_body();
     world_physics->add_body(maked_body2);
     maked_body2->is_kinematic = true;
     maked_body2->body_position.y = -2;
+
+    maked_body3 = world_physics->make_body();
+    world_physics->add_body(maked_body3);
+    maked_body3->is_kinematic = true;
+    maked_body3->body_position.y = -1.0f;
+    maked_body3->body_position.x = -1.2f;
   }
   else
   {
@@ -27,6 +36,7 @@ void GameScene::startScene()
 
   md = new Model("assets/Sphere.fbx");
   md2 = new Model("assets/Sphere.fbx");
+  md3 = new Model("assets/Sphere.fbx");
   scene_shader = new Shader("assets/shaders/default.vert", "assets/shaders/default.frag");
 }
 
@@ -61,30 +71,31 @@ void GameScene::updateScene(float deltatime)
   scene_shader->setMat4("model", model);
   md2->Draw(*scene_shader);
 
-  float force_multiplier = 55;
+  model = glm::mat4(1.0f);
+  model = glm::translate(model, maked_body3->get_position());
+  model = glm::scale(model, glm::vec3(0.5f));
+  scene_shader->setMat4("model", model);
+  md3->Draw(*scene_shader);
+
+  float force_multiplier = 300;
 
   if (glfwGetKey(GameSystem::window, GLFW_KEY_W) == GLFW_PRESS)
   {
-    maked_body->body_velocity = {0, 0, 0};
-    maked_body->force = {0, 0, 0};
-    maked_body->force.z += force_multiplier;
+    maked_body->force.z -= force_multiplier;
   }
 
   if (glfwGetKey(GameSystem::window, GLFW_KEY_A) == GLFW_PRESS)
   {
-    maked_body->body_velocity = {0, 0, 0};
     maked_body->force.x -= force_multiplier;
   }
 
   if (glfwGetKey(GameSystem::window, GLFW_KEY_S) == GLFW_PRESS)
   {
-    maked_body->body_velocity = {0, 0, 0};
-    maked_body->force.z -= force_multiplier;
+    maked_body->force.z += force_multiplier;
   }
 
   if (glfwGetKey(GameSystem::window, GLFW_KEY_D) == GLFW_PRESS)
   {
-    maked_body->body_velocity = {0, 0, 0};
     maked_body->force.x += force_multiplier;
   }
 

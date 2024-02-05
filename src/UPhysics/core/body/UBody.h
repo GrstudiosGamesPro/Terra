@@ -46,6 +46,13 @@ public:
   glm::vec3 body_angular_velocity = {0, 0, 0};
   glm::vec3 body_rotation = {0, 0, 0};
 
+  // FREEZE POSITIONS
+  bool freeze_x = false;
+  bool freeze_y = false;
+  bool freeze_z = false;
+
+  bool freeze_positions = false;
+
   UCollider *collision_type = new UCollider();
   ;
 };
