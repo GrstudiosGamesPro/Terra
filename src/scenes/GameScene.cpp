@@ -14,12 +14,10 @@ void GameScene::startScene()
     maked_body = world_physics->make_body();
     world_physics->add_body(maked_body);
     maked_body->body_position.y = 15.0f;
-    maked_body->collision_type = new UCollider();
 
     maked_body2 = world_physics->make_body();
     world_physics->add_body(maked_body2);
     maked_body2->is_kinematic = true;
-    maked_body2->collision_type = new UCollider();
     maked_body2->body_position.y = -2;
   }
   else
@@ -40,11 +38,20 @@ void GameScene::updateScene(float deltatime)
   scene_shader->setMat4("projection", projection);
   scene_shader->setMat4("view", view);
   scene_shader->setVec3("viewPos", camera.Position);
-
   glm::mat4 model = glm::mat4(1.0f);
   model = glm::mat4(1.0f);
   model = glm::translate(model, glm::vec3(maked_body->body_position.x, maked_body->body_position.y, maked_body->body_position.z));
+
+  glm::quat rotationZ = glm::angleAxis(glm::radians(maked_body->body_rotation.x), glm::vec3(0.0f, 0.0f, 1.0f));
+  glm::quat rotationY = glm::angleAxis(glm::radians(maked_body->body_rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+  glm::quat rotationX = glm::angleAxis(glm::radians(maked_body->body_rotation.z), glm::vec3(1.0f, 0.0f, 0.0f));
+
+  rotation = rotationZ * rotationY * rotationX;
+
+  model *= glm::mat4_cast(rotation);
+
   model = glm::scale(model, glm::vec3(0.5f));
+
   scene_shader->setMat4("model", model);
   md->Draw(*scene_shader);
 
@@ -60,7 +67,7 @@ void GameScene::updateScene(float deltatime)
   {
     maked_body->body_velocity = {0, 0, 0};
     maked_body->force = {0, 0, 0};
-    maked_body->force.y += force_multiplier;
+    maked_body->force.z += force_multiplier;
   }
 
   if (glfwGetKey(GameSystem::window, GLFW_KEY_A) == GLFW_PRESS)
@@ -72,7 +79,7 @@ void GameScene::updateScene(float deltatime)
   if (glfwGetKey(GameSystem::window, GLFW_KEY_S) == GLFW_PRESS)
   {
     maked_body->body_velocity = {0, 0, 0};
-    maked_body->force.y -= force_multiplier;
+    maked_body->force.z -= force_multiplier;
   }
 
   if (glfwGetKey(GameSystem::window, GLFW_KEY_D) == GLFW_PRESS)

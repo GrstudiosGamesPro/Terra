@@ -34,3 +34,17 @@ void UBody::set_position(vec3 new_position)
 {
   body_position = new_position;
 }
+
+glm::vec3 UBody::calculateTorque()
+{
+  glm::vec3 position = get_position();
+  glm::vec3 gravity_direction = glm::normalize(glm::vec3(0.0f, -9.81f, 0.0f));
+  glm::vec3 torque = glm::cross(position, gravity_direction * (-9.81f * mass));
+
+  std::cout << "X TORQUE: " << torque.x << std::endl;
+  std::cout << "Y TORQUE: " << torque.y << std::endl;
+  std::cout << "Z TORQUE: " << torque.z << std::endl;
+  body_rotation = torque;
+
+  return torque;
+}

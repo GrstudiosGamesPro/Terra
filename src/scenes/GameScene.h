@@ -18,6 +18,8 @@ public:
   Shader *scene_shader = nullptr;
   Camera camera = Camera();
 
+  glm::quat rotation;
+
   void startScene() override;
   void updateScene(float deltatime) override;
   void onSwapBuffer() override;

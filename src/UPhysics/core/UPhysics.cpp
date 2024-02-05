@@ -3,17 +3,24 @@
 void UPhysics::step_world(float elapsed_time)
 {
   in_step = elapsed_time;
-  // elapsed_time es el tiempo transcurrido desde la última actualización
 
   for (UBody *body : bodys)
   {
     if (!body->is_kinematic)
     {
       body->force += gravity * body->mass;
+
       glm::vec3 acceleration = body->force / body->mass;
       body->body_velocity += acceleration * elapsed_time;
+
       body->body_position += body->body_velocity * elapsed_time;
+
       body->force = glm::vec3(0, 0, 0);
+      glm::vec3 torque = body->calculateTorque();
+
+      glm::vec3 angular_acceleration = torque / body->moment_of_inertia;
+
+      body->body_angular_velocity += angular_acceleration * elapsed_time;
     }
 
     for (UBody *body2 : bodys)
