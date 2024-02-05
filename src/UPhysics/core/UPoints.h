@@ -60,7 +60,7 @@ public:
   glm::vec3 collider_radius = {1.0f, 1.0f, 1.0f};
   float radius = 1.0f;
   float density = 1.0f;
-  float friction = 0.5f;
+  float friction = 5.0f;
 };
 
 struct UColliderPlane : UCollider

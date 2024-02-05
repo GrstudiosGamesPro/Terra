@@ -15,7 +15,6 @@ void GameScene::startScene()
     world_physics->add_body(maked_body);
     maked_body->body_position.y = 15.0f;
 
-    maked_body->collision_type = new UColliderSphere();
     maked_body->freeze_z = true;
 
     maked_body2 = world_physics->make_body();
@@ -27,7 +26,13 @@ void GameScene::startScene()
     world_physics->add_body(maked_body3);
     maked_body3->is_kinematic = true;
     maked_body3->body_position.y = -1.0f;
-    maked_body3->body_position.x = -1.2f;
+    maked_body3->body_position.x = -3.0f;
+
+    maked_body4 = world_physics->make_body();
+    world_physics->add_body(maked_body4);
+    maked_body4->is_kinematic = true;
+    maked_body4->body_position.y = -1.0f;
+    maked_body4->body_position.x = 3.0f;
   }
   else
   {
@@ -37,6 +42,7 @@ void GameScene::startScene()
   md = new Model("assets/Sphere.fbx");
   md2 = new Model("assets/Sphere.fbx");
   md3 = new Model("assets/Sphere.fbx");
+  md4 = new Model("assets/Sphere.fbx");
   scene_shader = new Shader("assets/shaders/default.vert", "assets/shaders/default.frag");
 }
 
@@ -60,24 +66,32 @@ void GameScene::updateScene(float deltatime)
 
   model *= glm::mat4_cast(rotation);
 
-  model = glm::scale(model, glm::vec3(0.5f));
+  model = glm::scale(model, glm::vec3(maked_body->collision_type->radius / 2.0f));
 
   scene_shader->setMat4("model", model);
   md->Draw(*scene_shader);
 
   model = glm::mat4(1.0f);
   model = glm::translate(model, glm::vec3(0.0f, -2.0f, 0.0f));
-  model = glm::scale(model, glm::vec3(0.5f));
+  model = glm::scale(model, glm::vec3(maked_body2->collision_type->radius / 2.0f));
   scene_shader->setMat4("model", model);
   md2->Draw(*scene_shader);
 
   model = glm::mat4(1.0f);
   model = glm::translate(model, maked_body3->get_position());
-  model = glm::scale(model, glm::vec3(0.5f));
+  model = glm::scale(model, glm::vec3(maked_body3->collision_type->radius / 2.0f));
   scene_shader->setMat4("model", model);
   md3->Draw(*scene_shader);
 
-  float force_multiplier = 300;
+  model = glm::mat4(1.0f);
+  model = glm::translate(model, maked_body4->get_position());
+  model = glm::scale(model, glm::vec3(maked_body4->collision_type->radius / 2.0f));
+  scene_shader->setMat4("model", model);
+  md4->Draw(*scene_shader);
+
+  maked_body4->collision_type->radius += 0.001f;
+
+  float force_multiplier = 100;
 
   if (glfwGetKey(GameSystem::window, GLFW_KEY_W) == GLFW_PRESS)
   {

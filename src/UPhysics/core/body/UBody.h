@@ -34,7 +34,7 @@ public:
   glm::vec3 calculateTorque();
 
   // VARIABLES
-  float mass = 10.0f;
+  float mass = 1.0f;
   bool use_gravity = true;
   bool is_kinematic = false;
   float moment_of_inertia = 0.0f;

@@ -12,44 +12,43 @@ void UPhysics::step_world(float elapsed_time)
 
       glm::vec3 acceleration = body->force / body->mass;
       body->body_velocity += acceleration * elapsed_time;
+      // body->body_velocity += acceleration * elapsed_time;
 
       if (body->freeze_x)
       {
         body->force.x = 0;
         body->body_velocity.x = 0;
-        body->body_position.x = body->body_position.x;
-        body->body_position.y += body->body_velocity.y * elapsed_time;
-        body->body_position.z += body->body_velocity.z * elapsed_time;
-      }
-      else if (body->freeze_y)
-      {
-        body->force.y = 0;
-        body->body_velocity.y = 0;
-        body->body_position.y = body->body_position.y;
-        body->body_position.x += body->body_velocity.x * elapsed_time;
-        body->body_position.z += body->body_velocity.z * elapsed_time;
-      }
-      else if (body->freeze_z)
-      {
-        body->force.z = 0;
-        body->body_velocity.z = 0;
-        body->body_position.z = body->body_position.z;
-        body->body_position.x += body->body_velocity.x * elapsed_time;
-        body->body_position.y += body->body_velocity.y * elapsed_time;
       }
       else
       {
-        body->body_position += body->body_velocity * elapsed_time;
+        body->body_position.x += body->body_velocity.x * elapsed_time;
       }
 
-      // Resto de la lógica para la actualización del cuerpo (gravedad, colisiones, etc.)
-      // ...
+      if (body->freeze_y)
+      {
+        body->force.y = 0;
+        body->body_velocity.y = 0;
+      }
+      else
+      {
+        body->body_position.y += body->body_velocity.y * elapsed_time;
+      }
+
+      if (body->freeze_z)
+      {
+        body->force.z = 0;
+        body->body_velocity.z = 0;
+      }
+      else
+      {
+        body->body_position.z += body->body_velocity.z * elapsed_time;
+      }
+
+      body->force += gravity * body->mass;
 
       body->force = glm::vec3(0, 0, 0);
       glm::vec3 torque = body->calculateTorque();
-
       glm::vec3 angular_acceleration = torque / body->moment_of_inertia;
-
       body->body_angular_velocity += angular_acceleration * elapsed_time;
     }
 
@@ -122,7 +121,7 @@ void UPhysics::ResolveCollision(UBody *body1, UBody *body2)
     float coeficiente_friccion = body1->collision_type->friction * 100.0f;
     glm::vec3 fuerza_friccion = -coeficiente_friccion * glm::dot(body1->body_velocity, collisionNormal) * collisionNormal;
 
-    if (glm::length(fuerza_friccion) >= 200)
+    if (glm::length(fuerza_friccion) >= 10)
     {
       body1->apply_force(fuerza_friccion);
       body2->apply_force(-fuerza_friccion);
@@ -135,7 +134,16 @@ void UPhysics::ResolveCollision(UBody *body1, UBody *body2)
 
     body1->body_velocity = velocidad_despues_colision;
 
-    glm::vec3 nueva_posicion = body2->get_position() + collisionNormal * (body1->collision_type->radius + body2->collision_type->radius) / 2.0f;
+    glm::vec3 nueva_posicion = body2->get_position() * combinedCollision(*body1, *body2) + collisionNormal;
+
+    std::cout << "X: " << nueva_posicion.x << std::endl;
+    std::cout << "Y: " << nueva_posicion.y << std::endl;
+    std::cout << "Z: " << nueva_posicion.z << std::endl;
+
+    std::cout << "NORMAL X: " << collisionNormal.x << std::endl;
+    std::cout << "NORMAL Y: " << collisionNormal.y << std::endl;
+    std::cout << "NORMAL Z: " << collisionNormal.z << std::endl;
+
     body1->set_position(nueva_posicion);
   }
 }

@@ -26,7 +26,6 @@ void UBody::update_body()
 
 void UBody::apply_force(vec3 direction)
 {
-  body_velocity = vec3(0.0f, 0.0f, 0.0f);
   force += direction;
 }
 
@@ -41,9 +40,6 @@ glm::vec3 UBody::calculateTorque()
   glm::vec3 gravity_direction = glm::normalize(glm::vec3(0.0f, -9.81f, 0.0f));
   glm::vec3 torque = glm::cross(position, gravity_direction * (-9.81f * mass));
 
-  // std::cout << "X TORQUE: " << torque.x << std::endl;
-  // std::cout << "Y TORQUE: " << torque.y << std::endl;
-  // std::cout << "Z TORQUE: " << torque.z << std::endl;
   body_rotation = torque;
 
   return torque;

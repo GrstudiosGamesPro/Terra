@@ -13,9 +13,11 @@ public:
   UBody *maked_body;
   UBody *maked_body2;
   UBody *maked_body3;
+  UBody *maked_body4;
   Model *md = nullptr;
   Model *md2 = nullptr;
   Model *md3 = nullptr;
+  Model *md4 = nullptr;
 
   Shader *scene_shader = nullptr;
   Camera camera = Camera();
